@@ -4,7 +4,7 @@ export const pickQueryParams = <
 >(
   obj: T,
   keys: K[]
-) => {
+): Partial<T> => {
   const finalObject: Partial<T> = {};
 
   for (const key of keys) {
@@ -12,4 +12,6 @@ export const pickQueryParams = <
       finalObject[key] = obj[key];
     }
   }
+
+  return finalObject;
 };

@@ -35,8 +35,9 @@ export type ICowMethods = object;
 
 export type CowModel = Model<ICow, object, ICowMethods>;
 
-// export type IAcademicDepartmentFilters = {
-//   searchTerm?: string;
-//   title?: string;
-//   academicFaculty?: string;
-// };
+export type ICowFilters = {
+  searchTerm?: string;
+  maxPrice?: string;
+  minPrice?: string;
+  location?: string;
+};

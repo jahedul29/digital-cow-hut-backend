@@ -3,7 +3,10 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import httpStatus from 'http-status';
 import { catchAsync } from '../../../shared/catchAsync';
+import { paginationOptions } from '../../../shared/pagination/pagination.constant';
+import { pickQueryParams } from '../../../shared/pagination/pickQueryParams';
 import { sendResponse } from '../../../shared/sendResponse';
+import { cowFilterOptions } from './cow.constant';
 import { CowService } from './cow.service';
 
 const createCow: RequestHandler = catchAsync(
@@ -39,13 +42,18 @@ const updateCow: RequestHandler = catchAsync(
 
 const getAllCows: RequestHandler = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const savedCow = await CowService.getAllCows();
+    const filters = pickQueryParams(req.query, cowFilterOptions);
+
+    const paginationParams = pickQueryParams(req.query, paginationOptions);
+
+    const savedCow = await CowService.getAllCows(filters, paginationParams);
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
       message: savedCow ? 'Cows retrieved successfully' : 'No user found',
-      data: savedCow,
+      meta: savedCow?.meta,
+      data: savedCow.data,
     });
   }
 );
