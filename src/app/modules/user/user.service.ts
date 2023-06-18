@@ -38,6 +38,11 @@ const updateUser = async (
   return savedUser;
 };
 
+const getAllUsers = async () => {
+  const users = await User.find();
+  return users;
+};
+
 const getSingleUser = async (id: string): Promise<IUser | null> => {
   const savedUser = await User.findById(id);
   return savedUser;
@@ -51,6 +56,7 @@ const deleteUser = async (id: string): Promise<IUser | null> => {
 export const UserService = {
   createUser,
   updateUser,
+  getAllUsers,
   getSingleUser,
   deleteUser,
 };

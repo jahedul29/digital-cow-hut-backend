@@ -37,6 +37,19 @@ const updateUser: RequestHandler = catchAsync(
   }
 );
 
+const getAllUsers: RequestHandler = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const savedUser = await UserService.getAllUsers();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: savedUser ? 'Users retrieved successfully' : 'No user found',
+      data: savedUser,
+    });
+  }
+);
+
 const getSingleUser: RequestHandler = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
@@ -70,6 +83,7 @@ const deleteUser: RequestHandler = catchAsync(
 export const UserController = {
   createUser,
   updateUser,
+  getAllUsers,
   getSingleUser,
   deleteUser,
 };
