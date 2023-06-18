@@ -10,5 +10,7 @@ orderRouter.post(
   validateRequestWithZod(OrderValidationSchema.createOrderZodValidateSchema),
   OrderController.createOrder
 );
+orderRouter.get('/', OrderController.getAllOrders);
+orderRouter.get('/:id', OrderController.getSingleOrder);
 
 export const OrderRouter = orderRouter;

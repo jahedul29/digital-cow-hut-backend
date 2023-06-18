@@ -1,6 +1,8 @@
 import httpStatus from 'http-status';
-import mongoose from 'mongoose';
+import mongoose, { SortOrder } from 'mongoose';
+import { PaginationHelpers } from '../../../helpers/paginationHelper';
 import { ApiError } from '../../../shared/errors/errors.clsses';
+import { IPaginationOptions } from '../../../shared/pagination/pagination.interface';
 import Cow from '../cow/cow.model';
 import User from '../user/user.model';
 import { IOrder } from './order.interface';
@@ -69,12 +71,79 @@ const createOrder = async (order: IOrder): Promise<IOrder | null> => {
   return finalOrder;
 };
 
-const getAllOrders = async () => {
-  const users = await Order.find();
-  return users;
+const getAllOrders = async (
+  // filters: ICowFilters,
+  paginationParams: IPaginationOptions
+) => {
+  const { page, limit, skip, sortBy, sortOrder } =
+    PaginationHelpers.generatePaginationAndSortFields(paginationParams);
+
+  const sortConditions: { [key: string]: SortOrder } = {};
+  if (sortBy && sortOrder) {
+    sortConditions[sortBy] = sortOrder;
+  }
+
+  // const { searchTerm, ...filterData } = filters;
+  // const andConditions = [];
+  // let filterConditions = {};
+  // const searchableFields: string[] = cowSearchableFields;
+
+  // if (searchTerm) {
+  //   andConditions.push({
+  //     $or: searchableFields.map((field: string) => {
+  //       return {
+  //         [field]: {
+  //           $regex: new RegExp(searchTerm, 'i'),
+  //         },
+  //       };
+  //     }),
+  //   });
+
+  //   filterConditions = { $and: andConditions };
+  // }
+
+  // if (Object.keys(filterData).length > 0) {
+  //   andConditions.push({
+  //     $and: Object.entries(filterData).map(([field, value]) => {
+  //       if (field === 'maxPrice' && value) {
+  //         return { price: { $lte: parseFloat(value) } };
+  //       } else if (field === 'minPrice' && value) {
+  //         return { price: { $gte: parseFloat(value) } };
+  //       } else {
+  //         return { [field]: value };
+  //       }
+  //     }),
+  //   });
+
+  //   filterConditions = { $and: andConditions };
+  // }
+
+  const orders = await Order.find()
+    .populate('buyer')
+    .populate('cow')
+    .sort(sortConditions)
+    .skip(skip)
+    .limit(limit);
+
+  const total = await Order.countDocuments();
+
+  return {
+    data: orders,
+    meta: {
+      page,
+      limit,
+      total,
+    },
+  };
+};
+
+const getSingleOrder = async (id: string) => {
+  const orders = await Order.findById(id).populate('buyer').populate('cow');
+  return orders;
 };
 
 export const OrderService = {
   createOrder,
   getAllOrders,
+  getSingleOrder,
 };

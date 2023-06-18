@@ -15,7 +15,7 @@ const createCow = async (cow: ICow): Promise<ICow | null> => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Seller not found');
   }
 
-  const savedCow = await Cow.create(cow);
+  const savedCow = (await Cow.create(cow)).populate('seller');
   return savedCow;
 };
 
@@ -34,7 +34,7 @@ const updateCow = async (
 
   const savedCow = await Cow.findOneAndUpdate({ _id: id }, cow, {
     new: true,
-  });
+  }).populate('seller');
 
   return savedCow;
 };
@@ -105,12 +105,12 @@ const getAllCows = async (
 };
 
 const getSingleCow = async (id: string): Promise<ICow | null> => {
-  const savedCow = await Cow.findById(id);
+  const savedCow = await Cow.findById(id).populate('seller');
   return savedCow;
 };
 
 const deleteCow = async (id: string): Promise<ICow | null> => {
-  const savedCow = await Cow.findByIdAndDelete(id);
+  const savedCow = await Cow.findByIdAndDelete(id).populate('seller');
   return savedCow;
 };
 
