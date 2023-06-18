@@ -1,6 +1,8 @@
 import cors from 'cors';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
+import { errorHandling } from './app/middlewares/errorHandling.middleware';
+import appRouter from './app/routes';
 
 const app: Application = express();
 
@@ -16,8 +18,10 @@ app.get('/api/v1', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 //routes
+app.use('/api/v1', appRouter);
 
 // middlewares
+app.use(errorHandling);
 
 // not found route
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
