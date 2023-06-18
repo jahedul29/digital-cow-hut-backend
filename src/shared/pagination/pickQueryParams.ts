@@ -8,8 +8,16 @@ export const pickQueryParams = <
   const finalObject: Partial<T> = {};
 
   for (const key of keys) {
-    if (obj && Object.hasOwnProperty.call(obj, key)) {
-      finalObject[key] = obj[key];
+    const lowerCase = String(key).toLowerCase();
+
+    if (obj) {
+      const isKeyExist = Object.keys(obj).find(
+        (key: string) => key.toLowerCase() === lowerCase
+      );
+
+      if (isKeyExist) {
+        finalObject[key] = obj[key];
+      }
     }
   }
 
