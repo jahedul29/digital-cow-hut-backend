@@ -1,12 +1,39 @@
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
+
+export type ILocation =
+  | 'Dhaka'
+  | 'Chattogram'
+  | 'Barishal'
+  | 'Rajshahi'
+  | 'Sylhet'
+  | 'Comilla'
+  | 'Rangpur'
+  | 'Mymensingh';
+
+export type ICowBreed =
+  | 'Brahman'
+  | 'Nellore'
+  | 'Sahiwal'
+  | 'Gir'
+  | 'Indigenous'
+  | 'Tharparkar'
+  | 'Kankrej';
 
 export type ICow = {
-  phoneNumber: string;
+  name: string;
+  age: number;
+  price: number;
+  location: ILocation;
+  breed: ICowBreed;
+  weight: number;
+  label: 'for sale' | 'sold out';
+  category: 'Dairy' | 'Beef' | 'Dual Purpose';
+  seller: Types.ObjectId;
 };
 
 export type ICowMethods = object;
 
-export type AcademicDepartmentModel = Model<ICow, object, ICowMethods>;
+export type CowModel = Model<ICow, object, ICowMethods>;
 
 // export type IAcademicDepartmentFilters = {
 //   searchTerm?: string;

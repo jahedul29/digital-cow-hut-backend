@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+import { CowRouter } from '../modules/cow/cow.route';
 import { UserRouter } from '../modules/user/user.route';
 
 const appRouter = express.Router();
@@ -7,6 +8,10 @@ const routes = [
   {
     path: '/user',
     route: UserRouter,
+  },
+  {
+    path: '/cow',
+    route: CowRouter,
   },
 ];
 
