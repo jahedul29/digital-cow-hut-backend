@@ -11,8 +11,8 @@ export type IUser = {
   password: string;
   name: IUserName;
   address: string;
-  budget?: number;
-  income?: number;
+  budget: number;
+  income: number;
 };
 
 export type IUserMethods = object;

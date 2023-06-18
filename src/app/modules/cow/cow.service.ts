@@ -30,6 +30,8 @@ const updateCow = async (
     }
   }
 
+  cow.label = 'for sale';
+
   const savedCow = await Cow.findOneAndUpdate({ _id: id }, cow, {
     new: true,
   });

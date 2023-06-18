@@ -35,11 +35,11 @@ const userSchema = new Schema<IUser, UserModel>(
       required: true,
     },
     budget: {
-      type: String,
+      type: Number,
       required: true,
     },
     income: {
-      type: String,
+      type: Number,
       required: true,
     },
   },
